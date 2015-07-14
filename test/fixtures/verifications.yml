@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: MyText
+  last_name: MyText
+  second_name: MyText
+  birthday: 2014-08-30
+  phone: MyString
+  tpname: MyText
+  tprelation: MyText
+  tpphone: MyString
+  tp1name: MyText
+  tp1relation: MyText
+  tp1phone: MyString
+  firstverification: false
+  verificationinformright: false
+  kzcitizen: false
+
+two:
+  first_name: MyText
+  last_name: MyText
+  second_name: MyText
+  birthday: 2014-08-30
+  phone: MyString
+  tpname: MyText
+  tprelation: MyText
+  tpphone: MyString
+  tp1name: MyText
+  tp1relation: MyText
+  tp1phone: MyString
+  firstverification: false
+  verificationinformright: false
+  kzcitizen: false

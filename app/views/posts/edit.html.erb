@@ -1,0 +1,89 @@
+<% provide(:title, 'Редактировать задание') %>
+<aside class="span4">
+     <section>
+        <%= javascript_include_tag "posts" %>
+<div class="create_task">
+<%= form_for([@category, @post]) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+    <h2>Заполните заявку</h2>
+    <div class="task_form_category">
+      <p>
+        Изменить категорию
+      <%= f.collection_select :category_id, Category.where(parent_id: 0), :id, :name, class: "form-control" %>
+      </p>
+      </div>
+      <div class="task_form_city">
+      <p>
+        Выбрать другой город
+          <%= f.collection_select :city_id, City.all, :id, :name, class: "form-control" %>
+      </p>
+      </div>
+      <div>
+  	  <p>
+       Я хочу
+      </p>
+  <%= f.text_area :name, placeholder: "Коротко сформулируйте задачу", class: "form-control name" %>
+  </div>
+  	<p>
+    Добавьте детали, чтобы исполнители лучше поняли вашу задачу
+  	</p>
+    <%= f.text_area :content, autofocus: true, placeholder: "Подробно опишите задание", class: "form-control"  %>
+
+    <div class="task_form_date_time">
+      <div class="date">
+        <%= f.text_field :date, value: Anjlab::Widgets.format_date(f.object.date), "data-widget"=>"datepicker", placeholder: "Укажите дату", class: "form-control" %>     
+      </div>
+      <div class="time">
+        <%= f.text_field :time, placeholder: "Выберите время", :id => "ssn", class: "form-control" %>        
+      </div>
+    </div>
+    <div class="task_form_adresses">
+    <%= f.text_field :adress1, placeholder: "улица, дом, ориентир, поле обязательно для заполнения", class: "form-control" %>
+  </div>
+  <div class="task_form_adresses">
+    <%= f.text_field :adress2, placeholder: "улица, дом, ориентир, не обязательно заполнять если нет необходимости указывать второй адресс", class: "form-control" %>
+    </div>
+    <div class="task_form_price">
+      <h4>Оплата и публикация</h4>
+    <div class="task_form_executor_price">
+        <%= f.radio_button :price, false , class: "task_rb" %> Пусть исполнитель сам предложит цену
+      </div>
+    <div class="task_form_price_box">
+      <div class="task_form_radio_button">
+        <%= f.radio_button :price, true, class: "task_rb" %> Я готов заплатить за работу
+        </div>
+        <div class="price_box">
+        <%= f.text_field :price, class: "form-control" %>
+        </div> 
+        <span>тенге.</span>
+    </div>
+    </div>
+
+        <p>
+  Укажите телефон, будет доступен только выбранному исполнителю.
+    </p>
+        <div class="task_form_phone">
+    
+    <%= f.text_field :phone, value: current_user.phone, id: "phone", class: "form-control" %> 
+    </div>
+
+  <div class="publish_but_box">
+    <%= f.submit "Изменить", data: { disable_with: "Меняю" }, class: "btn btn-large btn-success" %>
+  </div>
+
+</div>
+<% end %>
+<script>
+    $(document).ready(function(){
+      $('#post_price_0').click(function(){
+        $('#post_price').val(''); 
+      });
+      $('#post_price').click(function(){
+        $('#post_price_true').prop('checked',true);
+        $('#post_price_0').prop('checked',0);
+      });
+
+      });
+    </script>
+      </section>
+    </aside>

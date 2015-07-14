@@ -1,0 +1,146 @@
+<% if current_user == @post.user.id %>
+<div class="create_review">
+        <h4 class="modal-title">Оцените работу исполнителя</h4>
+        <% if @post.executor.present? %>
+        <div class="responce_user_data">
+          <div class="user_responce_left">
+            <%= link_to (avatar_for @post.executor, size: "40x40"), @post.executor %>
+          </div>
+          <div class="user_responce_right">
+            <%= link_to @post.executor.full_name, @post.executor %>
+            <div class="user_responce_name">
+              Отзывы:<%= @post.executor.reviews.count %>
+            </div>
+          </div>
+        </div>
+        <h4>Поставьте оценки исполнителю</h4>
+      <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Качество</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.executor, "Качество" %> 
+            </div>
+            </div>
+            <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Вежливость</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.executor, "Вежливость" %> 
+            </div>
+            </div>
+            <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Цена</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.executor, "Цена" %>
+            </div>
+            </div>
+         <% end %>
+         <div class="create_review_new">
+          <h4>Оставьте отзыв</h4>
+    <%= form_for([@post, @review]) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+      <div class="create_review_rb">
+      <%= f.text_area :body, class: "form-control" %>
+      <%= f.label :negative, "Положительный отзыв" %>
+      <%= f.radio_button :negative, 1, checked: true %>
+      <%= f.label :negative, "Отрицательный отзыв" %>
+      <%= f.radio_button :negative, 0 %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.hidden_field :for_user_id, value: @post.executor.id %>
+      </div>
+       <%= f.text_field :customer_price, class: "form-control" %>
+       <%= f.label :status, "Задание выполнено" %>
+    <%=f.radio_button :status, 3, checked: true %>
+    <%= f.label :status, "Задание не выполнено" %>
+    <%=f.radio_button :status, 4 %>
+      <%= f.submit "Добавить отзыв исполнителю", class: "btn btn-large btn-primary", id: 'review_button' %>
+    <% end %>
+          </div>
+    <div class="clear"></div>
+      </div>
+      <% else %>
+      <div class="create_review-new">
+        <h4 class="modal-title">Оцените заказчика</h4>
+        <% if @post.user.present? %>
+        <div class="responce_user_data">
+          <div class="user_responce_left">
+            <%= link_to (avatar_for @post.user, size: "40x40"), @post.user %>
+          </div>
+          <div class="user_responce_right">
+            <%= link_to @post.user.full_name, @post.user %>
+            <div class="user_responce_name">
+             <div class="all_post_user_review">
+          <% if  @post.user.reviewss.present? %>
+          Отзывы:
+          <% if  @post.user.reviewss.where(negative: 0).present? %>
+           <i class="fa fa-thumbs-o-up"></i>
+        <%=  @post.user.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% if  @post.user.reviewss.where(negative: 1).present? %>
+          <i class="fa fa-thumbs-o-down"></i>
+        <%=  @post.user.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% else %>
+          Нет отзывов
+          <% end %>
+        </div>
+            </div>
+          </div>
+        </div>
+        <h4>Поставьте оценки заказчику</h4>
+      <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Качество</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.user, "Качество" %> 
+            </div>
+            </div>
+            <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Вежливость</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.user, "Вежливость" %> 
+            </div>
+            </div>
+            <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Цена</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.user, "Цена" %>
+            </div>
+            </div>
+         <% end %>
+         <div class="create_review_new">
+          <h4>Оставьте отзыв</h4>
+    <%= form_for([@post, @review]) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+      <div class="create_review_rb">
+         <%= f.label :status, "Задание выполнено" %>
+    <%=f.radio_button :status, 3, checked: true %>
+    <%= f.label :status, "Задание не выполнено" %>
+    <%=f.radio_button :status, 4 %>
+      <%= f.text_area :body, placeholder: "Ваш отзыв, например: Отличный заказчик советую" , class: "form-control" %>
+      <%= f.label :negative, "Положительный отзыв" %>
+      <%= f.radio_button :negative, 0, checked: true %>
+      <%= f.label :negative, "Отрицательный отзыв" %>
+      <%= f.radio_button :negative, 1 %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.hidden_field :for_user_id, value: @post.user.id %>
+      </div>
+       <%= f.text_field :executor_price,  placeholder: "Укажите финальную стоимость задания", class: "form-control" %>
+      
+      <%= f.submit "Добавить отзыв исполнителю", class: "btn btn-large btn-primary", id: 'review_button' %>
+    <% end %>
+          </div>
+    <div class="clear"></div>
+      </div>
+
+
+<% end %>

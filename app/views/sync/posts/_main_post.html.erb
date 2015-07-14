@@ -1,0 +1,20 @@
+<div class="home-page-feed-item">
+  <div class="hp-post-user-avatar">
+  <%= link_to (avatar_for post.user, size: "60x60"), post.user %>
+  </div>
+  <div class="hp-name-content-price">
+  <div class="home-page-posts-name">
+  <%= link_to (truncate post.name, length: 29), post %>
+  </div>
+  <div class="home-page-posts-price">
+    <% if post.price.present? %>
+    <%= number_to_currency(post.price, precision: 0, delimiter: " ") %>
+    <% else %>
+    открытая цена
+  <% end %>
+</div>
+<div class="home-page-posts-content">
+  <%= (truncate post.content, length: 140) %>
+  </div>
+  </div>
+  </div>

@@ -1,0 +1,51 @@
+<li>
+	<div class="all_post_name">
+	<div class="post_name" >
+  			<h3><%= link_to (truncate post.name,:length => 50), post %></h3>
+  		</div>
+  			<div class="feed_price">
+			<% if post.price.to_f == 0 %>
+				открытая цена
+				<% else %>
+				<%= number_to_currency(post.price,precision: 0, delimiter: " ") %>
+			<% end %>
+		    </div>
+	<div class="post_user">
+		<div class="all_post_user_info">
+				<div class="user_avatar">
+					<%= avatar_for post.user, :size => "50x50" %>
+				</div>
+				<div class="all_post_user_name">
+					<%= link_to post.user.name, (post.user) %>
+					<div class="all_post_user_review">
+					<% if post.user.reviewss.present? %>
+					Отзывы:
+					<% if post.user.reviewss.where(negative: 0).present? %>
+					 <i class="fa fa-thumbs-o-up"></i>
+        <%= post.user.reviewss.where(negative: 0).count %>
+					<% end %>
+					<% if post.user.reviewss.where(negative: 1).present? %>
+					<i class="fa fa-thumbs-o-down"></i>
+        <%= post.user.reviewss.where(negative: 1).count %>
+					<% end %>
+					<% else %>
+					Нет отзывов
+					<% end %>
+					</div>
+					</div>	
+					</div>				
+		<div class="all_post_adress">
+			<div>
+			<span><%= l post.date, format: :long %> г.</span>
+			</div>
+			<div>
+			<span><%= (truncate post.adress1,:length => 90) %></span>
+			</div>
+			<div>
+    <span>Опубликованно <%= time_ago_in_words(post.created_at) %> назад.</span>
+    </div>
+  		</div>
+  		</div>
+  		</div>
+  	
+</li>

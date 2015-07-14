@@ -1,0 +1,28 @@
+<ul>
+            <% @reviews.each do |review| %>
+            <li>
+              <div class="user_data">
+              <div class="user_review_left">
+                <%= link_to (avatar_for review.user, size: "50x50"), review.user %>
+              </div>
+              <div class="user_review_right">
+                <%= link_to review.user.name, review.user %>
+                <% if review.user == review.post.executor %>
+                исполнитель
+                <% else %>
+                заказчик
+                <% end %>
+                <div class="user_post_name">
+                  Отзыв на задание: <%= link_to (truncate review.post.name, length: 50), review.post %>
+                  </div>
+                </div>
+              </div>
+              <div class="post_review">
+                 <%= review.body %>
+              </div>
+              <div class="review_date">
+                <%= l review.created_at, :format => :my %> года.
+              </div>
+            </li>
+            <% end %>
+            </ul>

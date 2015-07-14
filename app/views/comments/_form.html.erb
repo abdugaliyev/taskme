@@ -1,0 +1,8 @@
+<%= link_to_function "Комментировать", "$('#main-comment-form').show();" %>
+<div id="main-comment-form" class="comment-form">
+      <%= form_for [@post, Comment.new] do |f| %>
+          <%= f.hidden_field :parent_id, :value => nil %>
+          <%= f.text_area :body, class: "form-control" %>
+          <%= f.submit 'Добавить комментарий', data: { disable_with: "Добавляю" }, class: "btn btn-primary comment_button" %>
+      <%end %>
+</div>

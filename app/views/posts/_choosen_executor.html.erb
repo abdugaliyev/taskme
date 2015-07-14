@@ -1,0 +1,36 @@
+<li>
+   <div class="responce_user_data">
+              <div class="user_responce_left">
+    <%= link_to (avatar_for @post.executor, size: "40x40"), @post.executor %> 
+  </div>
+  <div class="user_responce_right">
+     <%= link_to @post.executor.full_name, @post.executor %>
+     <div class="user_responce_name">
+      <div class="all_post_user_review">
+          <% if  @post.executor.reviewss.present? %>
+          Отзывы:
+          <% if  @post.executor.reviewss.where(negative: 0).present? %>
+           <i class="fa fa-thumbs-o-up"></i>
+        <%=  @post.executor.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% if  @post.executor.reviewss.where(negative: 1).present? %>
+          <i class="fa fa-thumbs-o-down"></i>
+        <%=  @post.executor.reviewss.where(negative: 1).count %>
+          <% end %>
+          <% else %>
+          Нет отзывов
+          <% end %>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="post_responce">
+          <% @post.responces.where(user_id: @post.executor.id).each do |f| %>
+      Коментарий к отклику на задание:  <%= wrap f.comment %>
+     Цена: <%= f.price %>
+     </div>
+      <div class="responce_date">
+        <%= l f.created_at, :format => :my %> года.
+        <% end %>
+       </div>
+</li>

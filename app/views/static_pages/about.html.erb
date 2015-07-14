@@ -1,0 +1,20 @@
+<% provide(:title, 'Безопасность и Гарантии') %>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300' rel='stylesheet' type='text/css'>
+<div class="static-page-about">
+<div class="statpageinfo">
+<div class="list-group">    
+  <%= link_to "Как это работает", about_path, class: "list-group-item"%>
+  <%= link_to "Безопасность", security_path, class: "list-group-item"%>
+  <%= link_to "Стать исполнителем", howtobeexecutor_path, class: "list-group-item" %>
+<h5><%= link_to "Я хочу стать исполнителем!", howtobeexecutor_path, class: "btn btn-success" %></h5>
+  </div>
+  </div>
+  	<div class="text-container">
+	<h1>Как это работает?</h1>
+	<p class="super-font">
+	  TaskMe — удобный сервис, который позволяет быстро и безопасно находить надежных исполнителей для решения бытовых и бизнес-задач. Вам достаточно разместить свое задание на сервисе. Через несколько минут вы начнете получать предложения от исполнителей, которые будут готовы решить вашу проблему.
+	  Выполнять задания на TaskMe могут исполнители, которые прошли специальную проверку администрацией сервиса. Вы можете убедиться, что наш сервис безопасен для заказчиков. TaskMe работает в Астане, Актобе и Алматы, а также на территории Акмолинской и Алма-атинской областей.
+	</p>
+  <%= link_to "Заказать услугу", categories_path, class: "btn btn-success btn-lg" %>
+	</div>
+  </div>

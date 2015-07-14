@@ -1,0 +1,13 @@
+<table>
+  <tr>
+    <th>Имя</th>
+    <th>Text</th>
+    <th colspan="2"></th>
+  </tr>
+<% @verifications.each do |verification| %>
+<tr>
+<td><%= link_to verification.first_name, verification_path(verification) %></td>
+<td><%= link_to 'Показать', verification_path(verification) %></td>
+  </tr>
+<% end %>
+</table>

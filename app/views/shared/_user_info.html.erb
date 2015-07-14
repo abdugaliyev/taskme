@@ -1,0 +1,12 @@
+<% provide(:title, @post.user.name) %>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= image_tag(@post.user.avatar)  %>
+        <%= @post.user.name %>
+        </h1>
+        <span>
+        <%= pluralize(current_user.posts.count, "Опубликованно заданий") %>
+        </span>
+          </section>

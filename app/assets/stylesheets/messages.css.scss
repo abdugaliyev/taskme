@@ -1,0 +1,67 @@
+// Place all the styles related to the messages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.notification{
+	ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-bottom: 1px solid #ececec;
+//border-top: 1px solid #ececec;
+	li{
+		a{
+		color:#4099fb;
+		font-size:18px;
+		}
+		a:hover{
+  color:red;
+  }
+	}
+	}
+	a{
+	color:black;
+	}
+	span{
+	font-size:12px;	
+	}
+	li:hover{
+	background-color: beige;
+	cursor:pointer;
+	}
+	h4{
+	font-size: 1.2em;
+	font-weight: bold;
+	margin: 0 0 5px;
+	}
+}
+
+.activity-time{
+	position:absolute;
+	right:20px;
+	font-size: 9px!important;
+	color: #9a9a9a;
+}
+
+.notification-info{
+	p{
+	margin: 0;
+	font-size:9px;
+	width: 180px;
+padding-top: 2px;
+	line-height: 1.2em;
+	}
+}
+
+.notification-author-avatar{
+	float: left;
+	margin: 5px 5px 0 0;
+}
+
+.notification-comment-info{
+	margin-left: 30px;
+	h5{
+	margin: 5px 0 5px 0;
+	}
+}

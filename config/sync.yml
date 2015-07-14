@@ -1,0 +1,30 @@
+# Faye
+development:
+  server: "http://localhost:9292/faye"
+  adapter_javascript_url: "http://localhost:9292/faye/faye.js" 
+  auth_token: DEVELOPMENT_SECRET_TOKEN
+  adapter: "Faye"
+  async: true
+
+# Pusher
+# development:
+#   adapter_javascript_url: "http://js.pusher.com/2.0/pusher.min.js" 
+#   app_id: "YOUR_PUSHER_APP_ID"
+#   api_key: "YOUR_PUSHER_API_KEY"
+#   auth_token: "YOUR_PUSHER_SECRET"
+#   adapter: "Pusher"
+#   async: true
+
+test:
+  server: "http://localhost:9292/faye"
+  adapter_javascript_url: "http://localhost:9292/faye/faye.js" 
+  adapter: "Faye"
+  auth_token: "secret"
+  async: false
+
+production:
+  server: "http://taskme.kz:9292/faye"
+  adapter_javascript_url: "http://taskme.kz:9292/faye/faye.js" 
+  adapter: "Faye"
+  auth_token: "4d1c9d180c22e6a955a26ab4edcbef7562d4fd5037d2e980b3f9339b9120225b"
+  async: true

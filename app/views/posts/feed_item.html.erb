@@ -1,0 +1,39 @@
+<li>
+	<div class="row post_name" >
+  		<div class="col-md-8 ">
+  			<h3><%= link_to (truncate post.name,:length => 90), post %></h3>
+  		</div>
+  		<div class="col-md-4 preview-small">
+  			<div class="feed_price pull-right">
+			<% if post.price.to_f == 0 %>
+				открытая цена
+				<% else %>
+				<%= number_to_currency post.price %>
+			<% end %>
+		    </div>
+		</div>
+	</div>
+	<div class="row post_user">
+		<div class="col-md-5"> 
+			<div class="row">
+				<div class="col-md-2 user_avatar">
+					<%= avatar_for post.user, :size => "50x50" %>
+				</div>
+				<div class="col-md-5">
+					<%= link_to post.user.name, (post.user) %><br>
+					<% if post.user.reviews.count.to_f == 0 %>
+						Нет отзывов
+						<% else %>
+					Отзывы:<%= (post.user.reviews.count) %>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-7 adress">
+			<span class="pull-right"><%= l post.date, format: :long %> г.</span><br>
+			<span class="pull-right"><%= (truncate post.adress1,:length => 90) %></span><br>
+    <span class="pull-right">Опубликованно <%= time_ago_in_words(post.created_at) %> назад.</span>
+    
+  		</div>
+  	</div>
+</li>

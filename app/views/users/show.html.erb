@@ -1,0 +1,235 @@
+<% provide(:title, @user.name) %>
+    <%= javascript_include_tag "jquery.raty" %>
+    <%= javascript_include_tag "letsrate" %>
+    <%= csrf_meta_tags %>
+    <div class="left-block">
+      <% if current_user == @user %>
+        <h1>Здравствуйте, <%= @user.name %> !</h1>
+        <% else %>
+        <h1>Здравствуйте, меня зовут <%= @user.name %>!</h1>
+        <% end %>
+        <div class="user_info_all">
+          <div class="user-avatar">
+            <%= avatar_for @user, size: "170x170" %>
+          </div>
+          <div class="user_info">
+            <ul>
+              <li>
+              <%= @user.age %> <%= Russian.p(@user.age, 'год', 'года', 'лет') %></li>
+                <%= image_tag "map-marker-150x150.png", size: "15x15", class: "map-marker" %>
+                <li>
+                <%= @user.city.name %>
+              </li>
+            </ul>
+            <div class="task_count">
+              <% if @user.posts.count == 0 %>
+              <% else %>
+              Создал <%= @user.posts.count %> <%= Russian.p(@user.posts.count, 'задание', 'задания', 'заданий') %>
+              <% end %>
+              </div>
+              <div class="user_main_rating">
+                <div class="user_main_rating_left">
+            <h4>Рейтинг</h4>
+          </div>
+          <div class="user_main_rating_right">
+            <%= average_rating_for(@user, ['Качество', 'Вежливость', 'Цена'])%>
+          </div>
+          </div>
+          <div class="user_actions">
+            <span>Задать вопрос</span>
+            <span>В избранное</span>
+          </div>
+            </div>
+          </div>
+           <% if current_user == @user %>
+    <div class="avatar-upload" id="avatar">
+    <%= form_for (@user) do |f| %>
+    <a class="main-item" id="click" href="javascript:void(0);" tabindex="1" >Загрузить аватар</a>
+    <%= f.file_field :avatar, id: "avatar-upload",  onchange: "this.form.submit();" %>
+    </div>
+    <% end %>
+    <% end %>
+      <script>
+$(document).ready(function(){
+  $('#click').click(function(){
+    $('#avatar-upload').click();
+    return false;
+  });
+});
+</script>
+          <div class="user_about">
+            <h3>Обо мне</h3>
+            <% if @user.about.present? %>
+            <%= @user.about %>
+            <% else %>
+            <h5>Пользователь еще не заполнил раздел</h5>
+            <% if current_user == @user %>
+            <%= form_for (@user) do |f| %>
+            <%= f.text_area :about, placeholder: "Напишите о себе, укажите образование, род деятельности", class: "form-control" %>
+            <%= f.submit "Сохранить", class: "btn btn-large btn-success user_about_button" %>
+            <% end %>
+            <% end %>
+            <% end %>
+            <% if @user.has_role? :executor %>
+            <h3>Услуги и цены</h3>
+            <p><%= @user.serviceprice %><p>
+              <% end %>
+          </div>
+          <% if @user.has_role? :executor %>
+          <div class="user_category">
+            <h3>Виды выполняемых работ</h3>
+          <ul>
+            <li>
+              <% @user.ecategories.where.not(parent_id: 0).group_by{|e| e.parent_id}.each do |parent, ecategories| %>
+                <%= link_to Ecategory.find(parent).name %>
+              <ul class="user_category_ul">
+                <% ecategories.each do |ecategory| %>
+                  <%= ecategory.name %>,
+                  <% end %>
+              </ul>
+              <% end %>
+            </li>
+          </ul>
+        </div>
+        <% end %>
+        <div class="user_rating_all clear">
+          <div class="user_rating">
+                <div class="user_rating_left">
+            <h5>Рейтинг</h5>
+          </div>
+          <div class="user_rating_right">
+            <%= average_rating_for(@user, ['Качество', 'Вежливость', 'Цена'])%>
+          </div>
+          </div>
+          <div class="user_rating">
+                <div class="user_rating_left">
+            <h5>Качество</h5>
+          </div>
+          <div class="user_rating_right">
+            <%= lock_rating_for @user, "Качество" %> 
+          </div>
+          </div>
+          <div class="user_rating">
+                <div class="user_rating_left">
+            <h5>Вежливость</h5>
+          </div>
+          <div class="user_rating_right">
+            <%= lock_rating_for @user, "Вежливость" %> 
+          </div>
+          </div>
+          <div class="user_rating">
+                <div class="user_rating_left">
+            <h5>Цена</h5>
+          </div>
+          <div class="user_rating_right">
+            <%= lock_rating_for @user, "Цена" %>
+          </div>
+          </div>
+        </div>
+            <div class="review_links">
+          <h3>Отзывы</h3>
+          <% if @user.reviewss.where(negative: 0).present? %>
+          <i class="reviews_thubm-up fa fa-thumbs-o-up fa-2x"></i>
+          <%= link_to user_path(@user, negative: 0), remote: true do %>
+        <%= "+"+(@user.reviewss.where(negative: 0).count).to_s %>
+        <% end %>
+        <% end %>
+        <% if @user.reviewss.where(negative: 1).present? %>
+        <i class="fa fa-thumbs-o-down fa-2x"></i>
+            <%= link_to user_path(id: @user.id, negative: 1), remote: true do %>
+            <%= "-"+(@user.reviewss.where(negative: 1).count).to_s %>
+            <% end %>
+            <% end %>
+          </div>
+          <div class="reviews">
+         <%= render 'users/reviews_negative_true' %>
+            </div>
+            <div class="clear">
+            <% if current_user == @user %>
+            <% if @user.has_role? :executor %>
+              <% else %>
+              <% if @user.verifications.any? %>
+              <% else %>
+            <%= link_to "Я хочу стать исполнителем", new_user_verification_path(@user), class: "btn btn-primary btn-lg" %>
+                <% end %>
+                <% end %>
+                <% end %>
+                </div>
+          </div>
+    <div class="right-block">
+      <% if @user.has_role? :executor %>
+      <div class="hourprice">
+        <% if @user.hourprice.present? %>
+      Цена за час работы  <span>от <%= number_with_precision(@user.hourprice, precision: 0, delimiter: " ") %> тенге</span>
+      <% else %>
+      <div class="user-executor-hourprice">
+        <%= form_for (@user) do |f| %>
+      <%= f.label :hourprice, "Укажите цену за час работы" %>
+      <%= f.text_field :hourprice, placeholder: "Укажите цену за час вашей работы", class: "form-control" %>
+      <div class="user-executor-hourprice-submit">
+      <%= f.submit "Сохранить", class: "btn btn-large btn-success" %>
+      </div>
+      <% end  %>
+    </div>
+      <% end %>
+      </div>
+      <div class="executor_info">
+          <div class="executor_info_left">
+          <%= image_tag "shield-308792_640.png", size: "60x70" %>
+          </div>
+          <div class="executor_info_right">
+          <h4>Исполнитель TaskMe</h4>
+          <h6>Верификация пройдена <% @user.verifications.each do |verification| %>
+              <%= verification.created_at.strftime("%d.%m.%Y") %></h6>
+              <% end %>
+          </div>
+          <div class="executor_info_all">
+              <div class="executor_icon">
+              <%= image_tag "male80.png", size: "20x20" %>
+              </div>
+              <div class="executor_icon_info">
+              <h6>Проверены персональные данные</h6>
+              </div>
+              <div class="executor_icon">
+              <%= image_tag "speech55.png", size: "20x20" %>
+              </div>
+              <div class="executor_icon_info">
+              <h6>Пройдено собеседование</h6>
+              </div>
+              <div class="executor_icon">
+              <%= image_tag "accepted.png", size: "20x20" %>
+              </div>
+              <div class="executor_icon_info">
+              <h6>Подтвержден опыт работы</h6>
+              </div>
+              <div class="executor_icon">
+              <%= image_tag "male80.png", size: "20x20" %>
+              </div>
+              <div class="executor_icon_info">
+              <h6><%= @usertaskcount.count %> <%= Russian.p(@usertaskcount.count, 'выполненное задание','выполненных задания','выполненных заданий')%></h6>
+              </div>              
+            </div>
+      </div>
+      <% end %>
+      <div class="verificated_contacts">
+      <h2>Подтвержденные контакты</h2>
+         <ul class="list-group">
+          <li class="list-group-item">
+            <% if @user.confirmed? %>
+            <%= @user.protected_email %>
+            <% else %>
+            Пользователь не подтвердил ни одного контакта
+            <% end %>
+          </li>
+        </ul>
+        </div>
+        <div class="contact-us">
+              <span class="contact-us-pic"><%= image_tag "4.png", size: "50x50" %></span>
+              <p class="callback">Звоните, я помогу вам<br>создать задание</p>
+              <p class="callbackphone">8 (707) 911 02 02</p>
+              <p class="hotline">Горячая линия: с 9:00 по 23:00,
+в выходные: с 9:00 по 21:00</p>
+            </div>
+          </div>
+    </div>
+    <div class="clear"></div>

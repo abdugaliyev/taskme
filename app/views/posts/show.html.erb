@@ -1,0 +1,256 @@
+<% provide(:title, 'Задание') %>
+<%= javascript_include_tag "jquery.raty" %>
+<%= javascript_include_tag "letsrate" %>
+<div class="left-block">
+	<div class="post">
+		<div class="post_title_price">
+		<h1 class="post_title"><%=(truncate @post.name, length: 45) %></h1>
+		<div class="price">
+				<% if @post.price.to_f == 0 %>
+				открытая цена
+				<% else %>
+				<%= number_to_currency(@post.price, precision: 0, delimiter: " ") %>
+				<% end %>
+				</div>
+				</div>
+				<div class="content">
+					<%= wrap (@post.content) %>
+				</div>
+				<div class="task_info">
+				  <ul class="list">
+					<li><%= @post.status_name %></li>
+					<li><%= @post.count %> <%= Russian.p(@post.count, 'просмотр', 'просмотра', 'просмотров') %></li>
+					<li><%= @post.category.name %></li>
+					<li>Создано <%= l @post.created_at, :format => :my %> г.</li>
+				  </ul>
+				</div>
+				<div class="task_date_time">
+					<li><strong>Когда:</strong>
+					  <% if @post.date.present? %>
+					  <%= l @post.date, :format => :short %>, <%= l @post.time, format: :long %></li>
+					  <% end %>
+				</div>
+				  <div class="task_adress" >
+				  <ul>
+				  <li><strong>от: </strong><%= @post.adress1 %></li>
+					<% if @post.adress2.present? %>
+					<li><strong>до: </strong><%= @post.adress2 %></li>
+					<% end %>
+					  </ul>
+					  </div>
+					  	<% if @post.status.to_f == 2 %>
+              <% if current_user? @post.user %>
+					  	<button class="btn btn-success" data-toggle="modal" data-target="#create_review">
+						  	Добавить отзыв и завершить задание
+						  </button>
+						  <% end %>
+              <% end %>
+               <div class="post-buttons">
+					<% if @post.status == 1 %>
+			<button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#response">
+			  Выполнить задание
+			</button>
+       <% if current_user? (@post.user) %>
+              <%= link_to 'Изменить задание', edit_post_path(@post), class: "btn btn-info btn-lg" %>
+          <% end %>      
+			<% end %>
+      </div>
+      </div>
+      <div class="responce">
+        <% if current_user? (@post.user) %>
+    <% if @post.status == 1 %>
+    <h3>У задания  <%= @post.responces.count %> <%= Russian.p(@post.responces.count, 'предложение', 'предложения', 'предложений') %></h3>
+    <%= render 'shared/feed' %>
+    <% else %>
+    <h4>Вы выбрали исполнителя</h4>
+    <%= render 'choosen_executor' %>
+    <% end %>
+        <% else %>
+        <h3>Предложения</h3>
+        <h5>Предложения видны только заказчику</h5>
+        <% end %>
+  </div>
+  <% if @post.reviews.any? %>
+  <div class="reviews">
+  <h3>Отзывы</h3>
+  <% @reviews.each do |review| %>
+  <ul>
+    <li>
+    	<div class="user_data">
+              <div class="user_review_left">
+          <%= avatar_for review.user, size: "50x50" %>
+      </div>
+      <div class="user_review_right">
+        <%= link_to review.user.name, review.user %>
+        <div class="user_post_name">
+        отзыв о выполнении задание  : <%= link_to @post.name, @post %>
+    </div>
+    </div>
+    </div>
+    <div class="post_review">
+          <%= review.body %>
+      </div>
+       <div class="review_date">
+                <%= l review.created_at, :format => :my %> года.
+              </div>
+    </li>
+    
+  </ul>
+  <% end %>
+  </div> 
+  <% end %>
+  <div>
+  </div>
+  <div class="comments">
+  	<h3>Коментарии</h3>
+  	<%= render partial: 'comments/list' %>
+  </div>
+</div>
+<div class="right-block">
+	<div class="task_customer_info">
+						  <h5>Заказчик этого задания</h5>
+						  <div class="task_user-avatar">
+				  	  <%= avatar_for @post.user, size: "100x100" %>
+				  	  </div>
+				  	  <div class="task_user_info">
+					  <h5><%= link_to @post.user.name, (@post.user) %></h5>
+					  <li><%= @post.user.age %> <%= Russian.p(@post.user.age, 'год', 'года', 'лет') %></li>
+					  <li><%= @post.user.city.name %></li>
+					  <div class="task_user_info_review">
+              <li>
+              <% if @post.user.reviewss.present? %>
+          Отзывы:
+          <% if @post.user.reviewss.where(negative: 0).present? %>
+           <i class="fa fa-thumbs-o-up"></i>
+        <%= @post.user.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% if @post.user.reviewss.where(negative: 1).present? %>
+          <i class="fa fa-thumbs-o-down"></i>
+        <%= @post.user.reviewss.where(negative: 1).count %>
+          <% end %>
+          <% else %>
+          Нет отзывов
+          <% end %>
+					  </li>
+					  </div>
+					  </div>
+					  </div>
+            <div class="contact-us">
+              <span class="contact-us-pic"><%= image_tag "4.png", size: "50x50" %></span>
+              <p class="callback">Звоните, я помогу вам<br>создать задание</p>
+              <p class="callbackphone">8 (707) 911 02 02</p>
+              <p class="hotline">Горячая линия: с 9:00 по 23:00,
+в выходные: с 9:00 по 21:00</p>
+            </div>
+					</div>
+    <div class="clear"></div>
+
+<% if signed_in? %>
+
+    <div class="modal fade" id="response">
+      <div class="responce_create">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Предложить услуги</h4>
+      <%= form_for([@post, @post.responces.build]) do |f| %>
+      <div class="responce_price">
+        <h5>Укажите во сколько вы оцениваете свои услуги</h5>
+      <%= f.label :price, "Цена" %>
+      <%= f.text_field :price, placeholder: "Цена", class: "form-control" %>
+      <span>тенге</span>
+      </div>
+      <div>
+        <h4>Комментарий</h4>
+      <%= f.text_area :comment, placeholder: "прокомментируйте свое предложение, тут вы можете написать всё что желаете", class: "form-control" %>
+      </div>
+      <%= f.submit "Оставить предложение", class: "btn btn-large btn-success" %>
+      <% end %>
+      </div>
+</div><!-- /.modal -->
+
+<% if @post.executor.present? %>
+<div class="modal fade" id="create_review">
+  <div class="create_review">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>Оцените работу исполнителя</h4>
+        <div class="responce_user_data">
+          <div class="user_responce_left">
+            <%= link_to (avatar_for @post.executor, size: "40x40"), @post.executor %>
+          </div>
+          <div class="user_responce_right">
+            <%= link_to @post.executor.full_name, @post.executor %>
+            <div class="user_responce_name">
+              <div class="all_post_user_review">
+          <% if  @post.executor.reviewss.present? %>
+          Отзывы:
+          <% if  @post.executor.reviewss.where(negative: 0).present? %>
+           <i class="fa fa-thumbs-o-up"></i>
+        <%=  @post.executor.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% if  @post.executor.reviewss.where(negative: 1).present? %>
+          <i class="fa fa-thumbs-o-down"></i>
+        <%=  @post.executor.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% else %>
+          Нет отзывов
+          <% end %>
+        </div>
+            </div>
+          </div>
+        </div>
+        <h4>Поставьте оценки исполнителю</h4>
+      <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Качество</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.executor, "Качество" %> 
+            </div>
+            </div>
+            <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Вежливость</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.executor, "Вежливость" %> 
+            </div>
+            </div>
+            <div class="user_rating">
+                  <div class="user_rating_left">
+              <h5>Цена</h5>
+            </div>
+            <div class="user_rating_right">
+              <%= rating_for @post.executor, "Цена" %>
+            </div>
+            </div>
+         <div class="create_review_new">
+<%= form_for([@post, @post.reviews.build]) do |f| %>
+    <div class="create_review_task_rb">
+    <%= f.label :status, "Задание выполнено" %>
+    <%=f.radio_button :status, 3, checked: true %>
+    <%= f.label :status, "Задание не выполнено" %>
+    <%=f.radio_button :status, 4 %>
+    </div>
+    <h4>Оставьте отзыв</h4>
+    <div class="create_review_rb">
+      <%= f.text_area :body, placeholder: "Ваш отзыв, например: Отличный исполнитель советую" , class: "form-control" %>
+      <%= f.label :negative, "Положительный отзыв" %>
+      <%= f.radio_button :negative, 0, checked: true %>
+      <%= f.label :negative, "Отрицательный отзыв" %>
+      <%= f.radio_button :negative, 1, checked: false %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.hidden_field :for_user_id, value: @post.executor.id %>
+      </div>
+    </div>
+    <div class="final-price">
+      <h5>Финальная стоимость задания</h5>
+      <%= f.text_field :customer_price, class: "form-control" %>
+    <span>тенге</span>
+    </div>
+    <%= f.submit "Добавить отзыв исполнителю и завершить задание", class: "btn btn-large btn-success", id: 'review_button' %>
+    <% end %>
+      </div>
+</div><!-- /.modal -->
+<% end %>
+
+<% end %> 
+

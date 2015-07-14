@@ -1,0 +1,7 @@
+<span class="activity-time"><%= time_ago_in_words(activity.created_at) %> назад.</span>
+<div class="notification-info">
+	<p>
+		Новый отклик на задание 
+	</p>
+	 «<%= link_to (truncate activity.trackable.post.name, length: 27 ), activity.trackable.post %>»
+</div>

@@ -1,0 +1,6 @@
+<% if @reviews.any? %>
+  <ol class="microposts">
+    <%= render partial: 'posts/reviews', collection: @reviews %>
+  </ol>
+  <%= will_paginate @reviews %>
+<% end %>

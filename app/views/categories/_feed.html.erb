@@ -1,0 +1,21 @@
+<div class="all_post_status_city_select">
+			<div class="all_post_status_select">
+					<%= form_tag category_posts_path, :method => 'get' do |f| %>
+					
+				<%= select_tag(:status, options_for_select([['Открыто для предложений', 1], ['Выполняется', 2], ['Выполнено', 3]],{ selected: params[:status]}), prompt: "Изменить статус", class: "form-control", onchange: "this.form.submit();") %>
+				</div>
+				<div class="all_post_city_select">
+				<%= select_tag(:city_id, options_for_select([['Астана', 1], ['Алматы', 2], ['Актобе', 3]], {selected: params[:city_id]}),prompt: "Выбрать город",class: "form-control", :onchange => "this.form.submit();") %>
+				
+	  				<% end %>
+	  				</div>
+	  				</div>
+	  				<% if @feed_items.any? %>
+	  				<div class="all_post_feed">
+	  				<ul>
+  				<%= render partial: 'categories/feed_item', collection: @feed_items %>
+  				</ul>
+  				</div>
+  <% else %>
+  <h2>Нет заданий в выбранной категории, может Вы будете первым</h2> <%= link_to "Создать задание", new_category_post_path, class: "btn btn-large btn-success" %>
+<% end %>

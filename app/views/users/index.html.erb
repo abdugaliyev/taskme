@@ -1,0 +1,46 @@
+<% provide(:title, 'Исполнители') %>
+<div class="left-block_all_post">
+		<ul class="executors-block">
+			<li><%=link_to "Все категории", users_path %></li>
+            <% Ecategory.where(parent_id: 0).each do |category| %>
+            <li class="executor-click"><%= link_to category.name, ecategory_users_path(category), class: 'parent_caty',remote: true %>
+              <ul class="executors-left-block" style="display:none;">
+                <% Ecategory.where(parent_id: category.id).each do |sub_category| %>
+                <div class="executors-left-block1" style="display:block;">
+                  <li ><%= link_to sub_category.name, ecategory_users_path(sub_category), remote: true %> </li>
+                  </div>
+                <% end %>
+              </ul>
+            </li>
+            <% end %>
+          </ul>
+      </div>
+<div class="right-block_all_post">
+	<%= render 'users/executors' %>
+	</div>
+<div>
+	<div class="clear"></div>
+<script>
+$(document).ready(function(){
+     $('.executors-block .executor-click .parent_caty').each(function(){
+      var e = $(this);
+      e.click(function(){  
+        if ( e.hasClass('current') ) {
+          e.next().hide();
+          e.removeClass('current');   
+        } 
+        else {
+          e.next().show();
+          e.addClass('current');  
+          $('.executors-block .executor-click .parent_caty').each(function(){
+            var m = $(this);
+            if ( e.attr('href') != m.attr('href') ) { 
+              m.next().hide();
+              m.removeClass('current');  
+            }  
+          });  
+        }
+      });
+    });   
+});
+</script>

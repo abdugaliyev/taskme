@@ -1,0 +1,106 @@
+<header>
+  <div class="header-menu super-font">
+    <div class="header-menu-logo">
+      <%=link_to "TaskMe", root_path, class: "header-menu-logo-h1" %>
+    </div>
+    <div class="header-menu-body">
+      <ul class="header-dropdown-menu">
+        <li>
+          <a class="main-item" href="javascript:void(0);" tabindex="1" >Создать задание</a>
+          <ul class="category">
+            <% Category.where(parent_id: 0).each do |category| %>
+            <li><%= link_to category.name, new_category_post_path(category) %>
+              <ul class="sub_category">
+                <h4><%= link_to category.name, new_category_post_path(category) %></h4>
+                <% Category.where(parent_id: category.id).each do |sub_category| %>
+                  <li><%= link_to sub_category.name, new_category_post_path(sub_category) %> </li>
+                <% end %>
+                <li><%= link_to "Создать другое задание", new_category_post_path(category) %></li>
+              </ul>
+            </li>
+            <% end %>
+          </ul>
+        </li>
+          </ul>
+        <div class="header-menu-links">
+        <span>
+        <%= link_to "Все задания", all_post_path %>
+        </span>
+        <span>
+        <%= link_to "Исполнители", users_path %>
+        </span>
+        </div>
+        <% if signed_in? %>
+        <div class="user-notification">
+          <a class="fa fa-bell fa-lg" id="notification_count" href="javascript:void(0);" tabindex="1"></a>
+            <section class="activity" id="activity">
+            </section>
+        </div>
+        <div class="circle" id="circle">
+          <%= render 'shared/activity' %>
+        </div>
+        <div class="header-menu-user-block">
+        <% if current_user.has_role? :executor %>
+        <div class="header-menu-right-links">
+              <span><%= link_to "Мои задания", mymadetask_path %></span>
+              <% end %>
+              <span><%= link_to "Мои заказы", mytasks_path %></span>
+              </div>
+              </div>
+              <div class="header-user-menu">
+              <a class="user-link" href="javascript:void(0);" tabindex="1" ><%= truncate current_user.email,:length => 20 %></a>
+              <ul class="header-user-menu-open">                 
+                  <li><%= link_to "Профиль", current_user %></li>
+                  <li><%= link_to "Настройки", edit_user_path(current_user) %></li>
+                  <li><%= link_to "Выйти", destroy_user_session_path, method: "delete" %></li>
+                  </ul>
+                  </div>
+            <% else %>
+            <div class="header-menu-login">
+              <span><%= link_to "Куда я попал?", about_path %></span>
+              <span><%= link_to "Зарегистрироваться!", new_user_registration_path %></span>
+                <span><%= link_to "Войти", user_session_path, id: "login" %></span>
+            <% end %>
+
+            </div>
+    </div>
+  </div><!-- /.navbar-collapse -->
+</header>
+<script>
+$(document).ready(function(){
+  $('#login').click(function(){
+    $('#ModalLogIn').modal();
+    return false;
+  });
+});
+</script>
+<div class="modal fade" id="ModalLogIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content1">
+        <div class="login-in-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h2>Войти</h2>
+        <%= form_for("user", :url => user_session_path) do |f| %>
+          <div class="form-group">
+              <%= f.email_field :email, placeholder: "E-mail", :autofocus => true, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= f.password_field :password, placeholder: "Пароль", class: "form-control" %>
+            </div>
+            <div class="checkbox">
+              <label>
+                <%= f.check_box :remember_me, style: 'width:auto;' %> Запомнить?
+              </label>
+              <div class="links">
+  Еще не с нами? <%= link_to "Зарегистрируйтесь", new_user_registration_path %>
+  </div>
+            </div>
+            <div class="sign-in-button">
+            <%= f.submit 'Войти', class: "btn btn-success" %>
+            </div>
+        <% end %> 
+        </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

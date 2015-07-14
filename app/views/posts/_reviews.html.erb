@@ -1,0 +1,9 @@
+  <span class="user">
+  	Отзыв к заданию <%= @post.name %>
+    <%= link_to reviews.user.name, reviews.user %>
+  </span>
+  <span class="content"><%= reviews.body %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(reviews.created_at) %> ago.
+  </span>
+</li>

@@ -1,0 +1,34 @@
+<% provide(:title, 'Безопасность') %>
+<div class="static-page-security">
+  <div class="statpageinfo">
+    <div class="list-group">
+      <%= link_to "Как это работает", about_path, class: "list-group-item"%>
+      <%= link_to "Безопасность", security_path, class: "list-group-item"%>
+      <%= link_to "Стать исполнителем", howtobeexecutor_path, class: "list-group-item" %>
+      <h5><%= link_to "Я хочу стать исполнителем!", howtobeexecutor_path, class: "btn btn-success" %></h5>
+    </div>
+  </div>
+  <div class="security-right-block">
+  <h1>Безопасность и гарантии</h1>
+  <p>Наша важнейшая задача — обеспечить максимальную безопасность ваших заданий.</p>
+    <div class="static-security-verification">
+      <div class="static-security-verification-text">
+        <h2>Верификация исполнителей</h2>
+        <p>
+        Чтобы стать исполнителем TaskMe необходимо указать свои персональные данные, данные доверенных лиц, подтвердить контакты (телефон, e-mail, аккаунты в соцсетях), пройти онлайн-тестирование и собеседование по телефону со специалистом сервиса. После этого принимается решение о присвоении статуса исполнителя или отказе. Выборочно мы просим некоторых исполнителей подтвердить паспортные данные. В профиле исполнителя указывается уровень его верификации. Если исполнитель получил более трех негативных отзывов от заказчиков TaskMe, он лишается статуса.</p>
+        </div>
+      <%= image_tag "securitypageimg.png", size: '270x200' %>
+      </div>
+      <div class="static-security-social">
+         <div class="static-security-social-text">
+      <h2>Отзывы и социальный рейтинг</h2>
+      <p>TaskMe показывает реальные отзывы заказчиков о каждом исполнителе.
+Это поможет при поиске исполнителя задания выбрать для работы самых ответственных людей. Высокий уровень рейтинга исполнителя свидетельствует о большом количестве качественно выполненных заданий.</p>
+</div>
+<%= image_tag "123.png", size: '270x230' %>
+</div>
+  <div class="static-security-link">
+  <%= link_to "Заказать услугу", categories_path, class: "btn btn-success btn-lg" %>
+  </div>
+  </div>
+  </div>

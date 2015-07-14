@@ -1,0 +1,28 @@
+<li>
+    <div class="mytask">
+    <div class="mytasksname">
+    <%= link_to (wrap feed_item.name), feed_item %>
+    <div class="mytasks-status">
+        <% if current_user? (feed_item.user) %>
+        <span class="mytask-responce-status"><%= feed_item.status_name %></span>
+        <span><%= link_to feed_item.responces.count, feed_item %> <%= Russian.p(feed_item.responces.count, 'предложение', 'предложения', 'предложений') %> выполнить задание</span>
+        <% end %>
+        <% if current_user? (feed_item.executor) %>
+        <% if feed_item.statusfromexecutor == 5 %>
+        <span><%= link_to "Закрыть задание", new_review_path(feed_item), class: "btn btn-success" %></span>
+        
+        <% else %>
+        <span>Вы закрыли задание</span>
+        <% end %>
+        <% end %>
+    </div>
+    </div>
+    <span class="feed_price">
+        <% if feed_item.price.to_f == 0 %>
+        открытая цена
+        <% else %>
+        <%= number_to_currency feed_item.price %>
+        <% end %>
+    </span>
+    </div>
+</li>

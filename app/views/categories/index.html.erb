@@ -1,0 +1,18 @@
+<div class="choose-category">
+<h2>Выберите категорию</h2>
+		<% Category.where.not(parent_id: 0).group_by{|e| e.parent_id}.each do |parent, categories| %>
+		<ul class="category-index-parent-category">
+			<div class="category-index-parent-link">
+		<%= link_to Category.find(parent).name, new_category_post_path(parent) %>
+		</div>
+			<% categories.each do |category| %>
+			<li>
+				<%= link_to category.name, new_category_post_path(category) %>
+			</li>
+			<% end %>
+			<div class="other-category-choose">
+			<%= link_to "другое задание", new_category_post_path(parent) %>
+			</div>
+		</ul>
+		<% end %>
+</div>

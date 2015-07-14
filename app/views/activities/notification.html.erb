@@ -1,0 +1,16 @@
+<%= stylesheet_link_tag "messages", media: "all" %>
+<div class="notification">
+	<h4>Уведомления</h4>
+	<% if @activities.any? %>
+<% @activities.each do |activity| %>
+    <ul>
+    	<li>
+    <%= render "activities/#{activity.trackable_type.underscore}/#{activity.action}", activity: activity %>
+    	</li>
+    </ul>
+<% end %>
+<i><%= link_to "отметить всё как прочитано", read_all_path, method: :post, remote: true %></i>
+<% else %>
+<h5>Нет непрочитанных уведомлений</h5>
+<% end %>
+</div>

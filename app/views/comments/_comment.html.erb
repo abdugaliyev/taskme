@@ -1,0 +1,31 @@
+<ul class="media-list">
+<% Comment.each_with_level(@post.comments.order('lft ASC')) do |comment, level| %>
+<li class="level-<%= level %> media comment">
+  <div class="comment_user_info">
+	<%= avatar_for comment.user, size: "25x25" %>
+  <span><%= link_to comment.user.full_name, comment.user %></span>
+  <span><%= time_ago_in_words comment.created_at %> назад.</span>
+</div>
+     <div class="comment_text" id="comment_<%= comment.id %>">
+       <%= comment.body %>
+     </div>
+     <div class="buttons">
+       <%= link_to_function "ответить", "$('#main-comment-form').find('#comment_parent_id').val(#{comment.id});", class: "reply", comment_id: comment.id  %>
+       <% if current_user? (comment.user) %>
+       <%= link_to 'удалить', comment,
+               						method: :delete,
+               				data: { confirm: 'Are you sure?' } %>
+               				<% end %>
+     </div>
+</li> 
+<% end %>
+</ul>
+<script>
+$(document).ready(function(){  
+  $('.reply').click(function(){
+    var id = $(this).attr('comment_id');
+    $('#comment_'+id).after($('#main-comment-form').html());
+    return false;
+  });
+});  
+</script>

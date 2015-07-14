@@ -1,0 +1,79 @@
+	<%= form_for([@user, @verification]) do |f| %>
+	<div class="verification-form">
+		<%= render 'shared/error_messages', object: f.object %>
+	<div class="verification-user-info">
+		<h1>Личные данные</h1>
+	<div class="verification-block">
+	<%= f.label :first_name, "Имя" %>
+	<%= f.text_field :first_name, placeholder: "Имя", class: "form-control" %>
+	</div>
+	<div class="verification-block">
+	<%= f.label :last_name, "Фамилия" %>
+	<%= f.text_field :last_name, placeholder: "Фамилия", class: "form-control" %>
+	</div>
+	<div class="verification-block">
+	<%= f.label :second_name, "Отчество" %>
+	<%= f.text_field :second_name, placeholder: "Отчество", class: "form-control" %>
+	</div>
+	<div class="user-verification-birthday">
+  		<div class="user-verification-name" >
+  			<%= f.label :birthday, "День рождения" %>
+  		</div>
+  		<div class="user-verification-select">
+  			<%= f.date_select :birthday, {:order => [:day, :month, :year], :start_year => 1940, :end_year => 1995}, { :class => "form-control" } %>
+  		</div>
+  	</div>
+	<div class="verification-block">
+	<%= f.label :phone, "Телефон" %>
+	<%= f.text_field :phone, value: current_user.phone, id: "phone", class: "form-control" %>
+	</div>
+	</div>
+	<div class="verification-form-info">
+		<p>Самый простой способ лишиться статуса исполнителя на Taskme — это указать недостоверную информацию.</p>
+		<p>После верификации мы просим случайное число исполнителей предоставить паспорт или иной документ для подтверждения информации.</p>
+		<p>Указывайте только свои настоящие персональные данные.</p>
+	</div>
+	<div class="verification-trusted-people">
+		<h1>Доверенные лица</h1>
+		<h5>Укажите людей (родственники, коллеги, друзья, соседи, знакомые), которые могут подтвердить информацию о вас. Рекомендуем предупредить их о том, что с ними могут связаться наши операторы.</h5>
+		<div class="verification-trusted-people-first">
+		<div class="verification-trusted-people-form">
+			<%= f.label :tpname, "Имя" %>
+			<%= f.text_field :tpname, placeholder: "Имя доверенного лица", class: "form-control" %>
+		</div>
+		<div class="verification-trusted-people-form">
+			<%= f.label :tprelation, "Кем Вам приходиться" %>
+			<%= f.text_field :tprelation, placeholder: "Кем Вам приходиться", class: "form-control" %>
+		</div>
+		<div class="verification-trusted-people-form">
+			<%= f.label :tpphone, "Телефон" %>
+			<%= f.text_field :tpphone, id: "phone1", class: "form-control" %>
+		</div>
+		</div>
+		<div class="verification-trusted-people-first">
+			<div class="verification-trusted-people-form">
+	<%= f.label :tp1name, "Имя" %>
+	<%= f.text_field :tp1name, placeholder: "Имя доверенного лица", class: "form-control" %>
+</div>
+<div class="verification-trusted-people-form">
+	<%= f.label :tp1relation, "Кем вам приходиться" %>
+	<%= f.text_field :tp1relation, placeholder: "Кем Вам приходиться", class: "form-control" %>
+	</div>
+	<div class="verification-trusted-people-form" >
+	<%= f.label :tp1phone, "Телефон" %>
+	<%= f.text_field :tp1phone, id: "phone2", class: "form-control" %>
+	</div>
+	</div>
+	<div class="verification-approve">
+	<p><%= f.check_box :firstverification %>
+	<%= f.label :firstverification, "Подтверждаю, что я прохожу верификацию на TASKME впервые" %></p>
+	<p><%= f.check_box :verificationinformright %>
+	<%= f.label :verificationinformright, "Подтверждаю, что я указал свои личные данные достоверно" %></p>
+	<p><%= f.check_box :kzcitizen %>
+	<%= f.label :kzcitizen, "Подтверждаю, что я гражданин РК" %></p>
+	</div>
+	<div class="verification-submit">
+	<%= f.submit "Подать заявку в исполнители", class: "btn btn-success btn-lg" %>
+	</div>
+<% end %>
+</div>

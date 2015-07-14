@@ -1,0 +1,34 @@
+<% provide(:title, 'Все задания') %>
+<div class="left-block_all_post">
+	<ul class="list-group">
+		<li class="list-group-item"><%= link_to 'Все категории', all_post_path %>
+		</li>
+		<% Category.where(parent_id: 0).each do |category| %>
+		<li class="list-group-item"><%= link_to category.name, category_posts_path(category) %>
+			<% end %>
+		</li>
+	</ul>
+</div>
+<div class="right-block_all_post post_feed">
+	<h1>Все задания</h1>
+	<div class="all_post_status_city_select">
+		<div class="all_post_status_select">
+			<%= form_tag all_post_path, :method => 'get' do |f| %>
+			<%= select_tag(:status, options_for_select([['Открыто для предложений', 1], ['Выполняется', 2], ['Выполнено', 3]],{ selected: params[:status]}), prompt: "Изменить статус", class: "form-control", onchange: "this.form.submit();") %>
+		</div>
+		<div class="all_post_city_select">
+			<%= select_tag(:city_id, options_for_select([['Астана', 1], ['Алматы', 2], ['Актобе', 3]], {selected: params[:city_id]}),prompt: "Выбрать город",class: "form-control", :onchange => "this.form.submit();") %>
+			<% end %>
+		</div>
+	</div>
+	<div class="all_post_feed">
+		<ul>
+			<%= render @posts %>
+		</ul>
+	</div>
+	<%= will_paginate @posts, renderer: BootstrapPagination::Rails, :previous_label => "Туда", :next_label => "Сюда", :page_gap => "......" %>
+</div>
+
+
+
+

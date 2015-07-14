@@ -1,0 +1,227 @@
+<% provide(:title, @user.name) %>
+<%= javascript_include_tag "jquery.raty" %>
+<%= javascript_include_tag "letsrate" %>
+<%= csrf_meta_tags %>
+<div class="left-block">
+	<h1>Здравствуйте, <%= @user.name %> !</h1>
+	<div class="user_info_all">
+		<div class="user-avatar">
+			<%= avatar_for @user, size: "170x170" %>
+		</div>
+		<div class="user_info">
+			<ul>
+				<li><%= @user.age %> <%= Russian.p(@user.age, 'год', 'года', 'лет') %></li>
+				<%= image_tag "map-marker-150x150.png", size: "15x15", class: "map-marker" %>
+				<li><%= @user.city.name %></li>
+			</ul>
+			<div class="task_count">
+				<% if @user.posts.count == 0 %>
+				<% else %>
+				Создал <%= @user.posts.count %> <%= Russian.p(@user.posts.count, 'задание', 'задания', 'заданий') %>
+				<% end %>
+			</div>
+			<div class="user_main_rating">
+				<div class="user_main_rating_left">
+					<h4>Рейтинг</h4>
+				</div>
+				<div class="user_main_rating_right">
+					<%= average_rating_for(@user, ['Качество', 'Вежливость', 'Цена'])%>
+				</div>
+          </div>
+          <div class="user_actions">
+          	<span>Задать вопрос</span>
+          	<span>В избранное</span>
+          </div>
+      </div>
+        <% if current_user == @user %>
+    <div class="avatar-upload" id="avatar">
+    <%= form_for (@user) do |f| %>
+    <a class="main-item" id="click" href="javascript:void(0);" tabindex="1" >Загрузить аватар</a>
+    <%= f.file_field :avatar, id: "avatar-upload",  onchange: "this.form.submit();" %>
+    </div>
+    <% end %>
+    <% end %>
+      <script>
+$(document).ready(function(){
+  $('#click').click(function(){
+    $('#avatar-upload').click();
+    return false;
+  });
+});
+</script>
+  </div>
+  <div class="user-settings">
+  	<h3>Настройки профиля</h3>
+  	<% if current_user == @user %>
+  	<%= form_for [@user] do |f| %>
+  	<div class="user-settings-name">
+  		<%= f.label :name, "Имя" %>
+  		<%= f.text_field :name, placeholder: "Напишите о себе, укажите образование, род деятельности", class: "form-control" %>
+  	</div>
+  	<div class="user-settings-name">
+  		<%= f.label :phone, "Телефон" %>
+  		<%= f.text_field :phone, id: "phone", class: "form-control-user" %>
+  	</div>
+  	<div class="user-birthday">
+  		<div class="user-birthday-name" >
+  			<%= f.label :birthday, "День рождения" %>
+  		</div>
+  		<div class="user-birthday-select">
+  			<%= f.date_select :birthday, {:order => [:day, :month, :year], :start_year => 1940, :end_year => 1995}, { :class => "form-control" } %>
+  		</div>
+  	</div>
+  	<div class="user-settings-city">
+  		<%= f.label :city_id, "Ваш город" %>
+  		<%= f.collection_select :city_id, City.all, :id, :name %>
+  	</div>
+  	<div class="user-setting-gender clear">
+  		<p>Пол</p>
+  		<div class="user-settings-gender-rb">
+  			<%= f.label :gender, "женский" %>
+  			<%= f.radio_button :gender, true %>
+  			<%= f.label :gender, "мужской" %>
+  			<%= f.radio_button :gender, false %>
+  		</div>
+  	</div>
+  	<div class="user-settings-avatar">
+  		<p>Аватар</p>
+  		<div class="user-settings-avatar-show">
+  		<%= avatar_for(@user, size: "200x200") %>
+  		</div>
+  		<div class="avatar-change">
+  			<p>Загрузить аватар</p>
+  		<%= f.file_field :avatar, class: "form-control-user" %>
+  		</div>
+  		<div class="user-settings-about">
+  		<%= f.label :about, "Обо мне" %>
+  			<%= f.text_area :about,placeholder: "Напишите о себе, укажите образование, род деятельности", class: "form-control" %>
+  	</div>
+  	<% if @user.has_role? :executor %>
+  	<div class="user-settings-about">
+  		<%= f.label :serviceprice, "Услуги и цены" %>
+  			<%= f.text_area :serviceprice, placeholder: "Укажите какие услуги вы можете оказать и предположительную цену", class: "form-control" %>
+  	</div>
+  	<div class="user-settings-name">
+  		<%= f.label :hourprice, "Цена за час работы" %>
+  		<%= f.text_field :hourprice, placeholder: "Укажите цену за час вашей работы", class: "form-control" %>
+  	</div>
+  	<div class="user-settings-category">
+  		<h5>Укажите услуги которые вы хотели бы исполнять на сервисе</h5>
+ <%= hidden_field_tag "user[ecategory_ids][]", nil %>
+    <% Ecategory.where(parent_id: 0).each do |ecategory| %>
+     <div>
+
+     <div class="user-settings-category2">
+       <div class="user-settings-category-label">
+       <%= label_tag dom_id(ecategory), ecategory.name %>
+       </div>
+       <div class="user-settings-category-cb">
+       <%= check_box_tag "user[ecategory_ids][]", ecategory.id, @user.ecategory_ids.include?(ecategory.id), id: dom_id(ecategory) %>
+       </div>
+     </div>
+      <% Ecategory.where(parent_id: ecategory.id).each do |ecategory| %>
+      <div class="user-settings-category1">
+      <div class="user-settings-category-label">
+      <%= label_tag dom_id(ecategory), ecategory.name %>
+      </div>
+      <div class="user-settings-category-cb">
+      <%= check_box_tag "user[ecategory_ids][]", ecategory.id, @user.ecategory_ids.include?(ecategory.id), id: dom_id(ecategory), parent_id: ecategory.parent_id, class: 'ecategory_child'  %>
+      </div>
+      </div>
+        <% end %>
+      </div>
+      <% end %>
+  	</div>
+    <div class="user-settings-category">
+      <h5>Укажите категории заданий по которым вы бы хотели получать уведомления на e-mail</h5>
+ <%= hidden_field_tag "user[category_ids][]", nil %>
+    <% Category.where(parent_id: 0).each do |category| %>
+     <div>
+     <div class="user-settings-category2">
+       <div class="user-settings-category-label">
+       <%= label_tag dom_id(category), category.name %>
+       </div>
+       <div class="user-settings-category-cb">
+       <%= check_box_tag "user[category_ids][]", category.id, @user.category_ids.include?(category.id), id: dom_id(category) %>
+       </div>
+     </div>
+      </div>
+      <% end %>
+    </div>
+  	<% end %>
+
+
+  		<div class="user-settings-submit">
+  		<%= f.submit "Сохранить", class: "btn btn-large btn-success" %>
+  		</div>
+  			<% end %>
+  		<% end %>
+  	</div>
+  	<div class="user-settings-changepassword">
+  		<h3>Изменить пароль</h3>
+  		<%= form_for(@user, :url => { :action => "update_password" } ) do |f| %>
+  		<div class="user-settings-password">
+    <p><%= f.label :password, "Пароль" %></p>
+    <span><%= f.password_field :password, class: "form-control" %></span>
+    </div>
+    <div class="user-settings-passwordconfirm">
+    <p><%= f.label :password_confirmation, "Подтверждение" %></p>
+    <span><%= f.password_field :password_confirmation, class: "form-control" %></span>
+    </div>
+  <div class="user-settings-pass-submit">
+    <%= f.submit "Изменить пароль", class: "btn btn-large btn-success" %>
+  </div>
+	<% end %>
+  	</div>
+  </div>
+</div>
+<div class="right-block">
+	<% if @user.has_role? :executor %>
+	<div class="hourprice">
+		Цена за час работы  <span>от <%= number_to_currency(@user.hourprice, locale: :ru) %></span>
+	</div>
+	<div class="executor_info">
+		<div class="executor_info_left">
+			<%= image_tag "shield-308792_640.png", size: "60x70" %>
+		</div>
+		<div class="executor_info_right">
+			<h4>Исполнитель TaskMe</h4>
+			<h6>Верификация пройдена <% @user.verifications.each do |verification| %>
+              <%= verification.created_at.strftime("%d.%m.%Y") %></h6>
+              <% end %>
+          </div>
+          <div class="executor_info_all">
+          	<div class="executor_icon">
+          		<%= image_tag "male80.png", size: "20x20" %>
+          	</div>
+          	<div class="executor_icon_info">
+          		<h6>Проверены персональные данные</h6>
+          	</div>
+          	<div class="executor_icon">
+          		<%= image_tag "speech55.png", size: "20x20" %>
+          	</div>
+          	<div class="executor_icon_info">
+          		<h6>Пройдено собеседование</h6>
+          	</div>
+          	<div class="executor_icon">
+          		<%= image_tag "accepted.png", size: "20x20" %>
+          	</div>
+          	<div class="executor_icon_info">
+          		<h6>Подтвержден опыт работы</h6>
+          	</div>
+          	<div class="executor_icon">
+          		<%= image_tag "male80.png", size: "20x20" %>
+          	</div>
+          	<div class="executor_icon_info">
+          		<h6><%= @usertaskcount.count %> <%= Russian.p(@usertaskcount.count, 'выполненное задание','выполненных задания','выполненных заданий')%></h6>
+          	</div>
+          </div>
+      </div>
+      <% end %>
+      <div class="verificated_contacts">
+      	<h2>Подтвержденные контакты</h2>
+      	<ul class="list-group">
+      		<li class="list-group-item"><%= @user.protected_email %></li>
+      	</ul>
+      </div>
+  </div>

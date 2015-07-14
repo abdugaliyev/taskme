@@ -1,0 +1,40 @@
+<li>
+   <div class="responce_user_data">
+              <div class="user_responce_left">
+    <%= link_to (avatar_for feed_item.user, size: "40x40"), feed_item.user %> 
+  </div>
+  <div class="user_responce_right">
+     <%= link_to feed_item.user.full_name, feed_item.user %>
+     <div class="user_responce_name">
+       <div class="all_post_user_review">
+          <% if  feed_item.user.reviewss.present? %>
+          Отзывы:
+          <% if  feed_item.user.reviewss.where(negative: 0).present? %>
+           <i class="fa fa-thumbs-o-up"></i>
+        <%=  feed_item.user.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% if  feed_item.user.reviewss.where(negative: 1).present? %>
+          <i class="fa fa-thumbs-o-down"></i>
+        <%=  feed_item.user.reviewss.where(negative: 0).count %>
+          <% end %>
+          <% else %>
+          Нет отзывов
+          <% end %>
+        </div>
+        </div>
+        </div>
+        <div class="responce_button">
+        <%= form_for feed_item.post, url: choose_executor_path do |f| %>
+      <%= f.hidden_field :executor_id, value: feed_item.user_id %>
+      <%= f.button 'Выбрать исполнителя', class: "btn btn-xs btn-success"  %>
+      <% end %>
+      </div>
+        </div>
+        <div class="post_responce">
+      Коментарий к отклику на задание: <%=wrap feed_item.comment %>
+     Цена: <%= feed_item.price %>
+     </div>
+      <div class="responce_date">
+        <%= feed_item.created_at.strftime("%d.%m.%Y") %>
+       </div>
+</li> 

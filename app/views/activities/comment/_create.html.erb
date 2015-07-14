@@ -1,0 +1,13 @@
+<% if activity.trackable %>
+<span class="activity-time"><%= time_ago_in_words(activity.created_at) %> назад.</span>
+<div class="notification-info">
+	<div class="notification-author-avatar">
+	<%= image_tag(activity.author.avatar, size: "25x25") %>
+</div>
+<div class="notification-comment-info">
+<p>Новый комментарий</p> 
+<h5><%= activity.author.full_name %></h5>
+<%= link_to activity.trackable.body, activity.trackable.attachable %>
+</div>
+</div>
+<% end %>

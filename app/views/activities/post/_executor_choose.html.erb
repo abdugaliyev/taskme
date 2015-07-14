@@ -1,0 +1,7 @@
+<span class="activity-time"><%= time_ago_in_words(activity.created_at) %> назад.</span>
+<div class="notification-info">
+	<p>
+		Вас выбрали исполнителем задания
+	</p>
+	 «<%= link_to (truncate activity.trackable.name, length: 27), activity.trackable %>»
+</div>

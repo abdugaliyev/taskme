@@ -1,0 +1,18 @@
+<% provide(:title, 'Все задания') %>
+<div class="left-block_all_post">
+		<ul class="list-group">
+	<li class="list-group-item"><%= link_to 'Все категории', all_post_path %> </li>
+<% Category.where(parent_id: 0).each do |category| %>
+<li class="list-group-item"><%= link_to category.name, category_posts_path(category) %> 
+</li>
+<% end %>
+</ul>
+</div>
+<div class="right-block_all_post post_feed">
+	<h1><%= @category.name %></h1>
+				<ul>	
+<%= render 'categories/feed' %>
+</ul>
+<%= will_paginate @feed_items, renderer: BootstrapPagination::Rails %>
+  				</div>
+	

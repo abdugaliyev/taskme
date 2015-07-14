@@ -1,0 +1,23 @@
+<div class="modal fade" id="create_review">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Оцените работу исполнителя</h4>
+      </div>
+      <div class="modal-body">
+      	<% if @post.executor.present? %>
+      	<%= @post.executor.name %><br>
+      	Наведите на область ниже текста и Вы увидите здёздочки для оценки<br>
+		Качество : <%= rating_for @post.executor, "Качество" %>
+        Вежливость : <%= rating_for @post.executor, "Вежливость" %>
+        Цена : <%= rating_for @post.executor, "Цена" %>
+         <% end %>
+		<%= form_for([@post, @post.reviews.build]) do |f| %>
+	    <%= f.text_area :body %>
+	    <%= f.submit "Добавить отзыв исполнителю", class: "btn btn-large btn-primary", id: 'review_button' %>
+		<% end %>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,182 @@
+<%= javascript_include_tag "posts" %>
+<h4>Уже с нами? Тогда <%= link_to "Войдите", user_session_path, id: "login1" %></h4> 
+<div class="create_task">
+<% resource.posts.build %>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |form| %>
+  <%= form.fields_for :posts do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+    <h2>Заполните заявку</h2>
+    <div class="task_form_category">
+      <p>
+        Изменить категорию
+      <%= f.collection_select :category_id, Category.where(parent_id: 0), :id, :name, class: "form-control" %>
+      </p>
+      </div>
+      <div class="task_form_city">
+      <p>
+        Выбрать другой город
+          <%= f.collection_select :city_id, City.all, :id, :name, class: "form-control" %>
+      </p>
+      </div>
+      <div>
+      <p>
+       Я хочу
+      </p>
+  <%= f.text_area :name, placeholder: "Коротко сформулируйте задачу", class: "form-control name", value: @value %>
+  </div>
+    <p>
+    Добавьте детали, чтобы исполнители лучше поняли вашу задачу
+    </p>
+    <%= f.text_area :content, autofocus: true, placeholder: "Подробно опишите задание", class: "form-control"  %>
+
+    <div class="task_form_date_time">
+      <div class="date">
+        <%= f.text_field :date, value: Anjlab::Widgets.format_date(f.object.date), "data-widget"=>"datepicker", placeholder: "Укажите дату", class: "form-control" %>     
+      </div>
+      <div class="time">
+        <%= f.text_field :time, placeholder: "Выберите время", :id => "ssn", class: "form-control" %>        
+      </div>
+    </div>
+    <div class="task_form_adresses">
+    <%= f.text_field :adress1, placeholder: "улица, дом, ориентир, поле обязательно для заполнения", class: "form-control" %>
+  </div>
+  <div class="task_form_adresses">
+    <%= f.text_field :adress2, placeholder: "улица, дом, ориентир, не обязательно заполнять если нет необходимости указывать второй адресс", class: "form-control" %>
+    </div>
+    <div class="task_form_price">
+      <h4>Оплата и публикация</h4>
+    <div class="task_form_executor_price">
+        <%= f.radio_button :price, false , class: "task_rb" %> Пусть исполнитель сам предложит цену
+      </div>
+    <div class="task_form_price_box">
+      <div class="task_form_radio_button">
+        <%= f.radio_button :price, true, class: "task_rb" %> Я готов заплатить за работу
+        </div>
+        <div class="price_box">
+        <%= f.text_field :price, value: @category_price, class: "form-control" %>
+        </div> 
+        <span>тенге.</span>
+    </div>
+    </div>
+
+        <p>
+  Укажите телефон, будет доступен только выбранному исполнителю.
+    </p>
+        <div class="task_form_phone">
+    
+    <%= f.text_field :phone, id: "phone", class: "form-control" %> 
+    </div>
+  <div class="register-post-form">
+<h2>Как к Вам обращаться?</h2>
+  <%= devise_error_messages! %>
+  <div class="form-group">
+    <%= form.text_field :name, :autofocus => true, placeholder: "Имя", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.email_field :email, placeholder: "E-mail", class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.collection_select :city_id, City.all, :id, :name %>
+  </div>
+   <div class="user-register">
+      <div class="user-register-name" >
+        <%= form.label :birthday, "День рождения" %>
+      </div>
+      <div class="user-register-select">
+        <%= form.date_select :birthday, {:order => [:day, :month, :year], :start_year => 1940, :end_year => 1995}, { :class => "form-control" } %>
+      </div>
+    </div>
+  <div class="form-group clear">
+    <%= form.password_field :password, placeholder: "Пароль",class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= form.password_field :password_confirmation, placeholder: "Повторите пароль", class: "form-control" %>
+  </div>
+<% end %>
+  <div class="publish_but_box">
+    <%= form.submit "Опубликовать", data: { disable_with: "Публикую" }, class: "btn btn-large btn-success" %>
+  </div>
+</div>
+</div>
+<% end %>
+<div class="pop_tasks">
+  <h2>Популярные услуги</h2>
+  <% @leftblock.each do |c| %>
+  <ul>
+  <li>
+    <div class="pop_task_block">
+    <%= link_to c.name, new_category_post_path(c) %>
+    <span><%= number_with_precision(c.price, precision: 0, delimiter: " ") %> тенге.</span>
+    </div>
+  </li>
+  <% end %>
+  </ul>
+    <% if @category.id > 14 %>
+    <% Category.where(slug:params[:category_id]).each do |c| %>
+    <% Category.where(parent_id:c.parent_id).each do |cc| %>
+    <ul>
+    <li>
+      <div class="pop_task_block">
+      <%=link_to cc.name, new_category_post_path(cc) %>
+      <span><%= number_with_precision(cc.price, precision: 0, delimiter: " ") %> тенге.</span>
+      </div>
+    </li>
+    <% end %>
+    <% end %>
+    <% end %>
+    </ul>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+      $('#user_posts_attributes_0_price_false').click(function(){
+        $('#user_posts_attributes_0_price').val(''); 
+      });
+      $('#user_posts_attributes_0_price').click(function(){
+        $('#user_posts_attributes_0_price_true').prop('checked',true);
+        $('#user_posts_attributes_0_price_false').prop('checked',false);
+      });
+
+      });
+    </script>
+
+
+<script>
+$(document).ready(function(){
+  $('#login1').click(function(){
+    $('#ModalLogIn').modal();
+    return false;
+  });
+});
+</script>
+<div class="modal fade" id="ModalLogIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content1">
+        <div class="login-in-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h2>Войти</h2>
+        <%= form_for("user", :url => user_session_path) do |f| %>
+          <div class="form-group">
+              <%= f.email_field :email, placeholder: "E-mail", :autofocus => true, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= f.password_field :password, placeholder: "Пароль", class: "form-control" %>
+            </div>
+            <div class="checkbox">
+              <label>
+                <%= f.check_box :remember_me, style: 'width:auto;' %> Запомнить?
+              </label>
+              <div class="links">
+  Еще не с нами? <%= link_to "Зарегистрируйтесь", new_user_registration_path %>
+  </div>
+            </div>
+            <div class="sign-in-button">
+            <%= f.submit 'Войти', class: "btn btn-success" %>
+            </div>
+        <% end %> 
+        </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

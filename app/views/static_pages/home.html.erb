@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--<meta content='<%= user_signed_in? ? current_user.id : "" %>' name='user-id'/>-->
+    <title><%= full_title(yield(:title)) %></title>
+    <%= metamagic description: "Удобный способ заказать любую услугу.", keywords: %w(Курьер в астане в алмате алматы астана ремонт курьерские услуги бытовой ремонт сантехник электрик грузчик грузчики грузоперевозки услуги сантехника услуги электрика установка дверей доставить доставка товаров товара ремонт компьютера компьютеров удаление вирусов настройка wifi установка антивируса мастер на час муж на час ремонт ванной ремонт туалета уборка квартир глажка переезд газель газель в астане газель в алматы газель в алмате доставка из магазина доставка лекарств личный помощник фрилансер в астане фрилансеры в астане размещение объявлений промоутер в астане аниматор официант массовка юридическая консультация заказать регистрация фирм заказать краудсорсинг в казахстане) %>
+<%= javascript_include_tag "application" %>
+<%= javascript_include_tag Sync.adapter_javascript_url %>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-47890551-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css' %>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300' rel='stylesheet' type='text/css'>
+    <%= csrf_meta_tags %>
+    <%= render 'layouts/shim' %>
+    <%= favicon_link_tag 'favicon.ico' %>
+  </head>
+  <body>
+    <%= render 'layouts/header' %>
+    <div class="wrap">
+      <div class="main_container-home-page super-font">
+     <%= yield %>
+    <% provide(:title, 'Главная') %>
+    <div class="home-page-info-block">
+      <p class="home-page-p">Удобный способ заказать любую услугу</p>
+      <p>Поможем найти надежного исполнителя для решения бытовых задач</p>
+      <%= link_to "Заказать услугу", categories_path %>
+    </div>
+    <div class="imgcenter">
+    <%= image_tag "5.png", class: "homepagepicture" %>
+    </div>
+    <section class="home-page-popular-h2">
+ <h2 class="super-font">Самые популярные услуги</h2>
+ </section>
+<script type="text/javascript">(function() {
+  if (window.pluso)if (typeof window.pluso.start == "function") return;
+  if (window.ifpluso==undefined) { window.ifpluso = 1;
+    var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+    s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+    s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+    var h=d[g]('body')[0];
+    h.appendChild(s);
+  }})();
+  </script>
+  <div class="pluso2">
+  <p>Поделиться с друзьями</p>
+<div class="pluso" data-background="transparent" data-options="medium,round,line,horizontal,counter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print" data-user="496808325"></div>
+</div>
+  <div class="popular-categories">
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("Courier.png"), new_category_post_path(1) %>
+      <span>Курьерские услуги</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("ComputerHelp.png"),new_category_post_path(2) %>
+      <span>Компьютерная помощь</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("Clerical.png"), new_category_post_path(3) %>
+      <span>Бытовой ремонт</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("TechRepair.png"), new_category_post_path(4) %>
+      <span>Установка и ремонт техники</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("House.png"), new_category_post_path(5) %>
+      <span>Уборка и помощь по хозяйству</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("ElectronicRepair.png"), new_category_post_path(6) %>
+      <span>Ремонт цифровой техники</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("Trucking.png"), new_category_post_path(7) %>
+      <span>Грузоперевозки</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("Delivery.png"), new_category_post_path(8) %>
+      <span>Купить и доставить</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("VirtualAssistant.png"), new_category_post_path(9) %>
+      <span>Виртуальный помощник</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("Promo.png"), new_category_post_path(10) %>
+      <span>Мероприятия и промо акции</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("Photoshop.png"), new_category_post_path(11) %>
+      <span>Фото видео услуги</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("WebDesign.png"), new_category_post_path(12) %>
+      <span>Интернет и дизайн</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("HealthAndBeauty.png"),new_category_post_path(13) %>
+      <span>Красота и здоровье</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("LegalAdvice.png"), new_category_post_path(14) %>
+      <span>Юридическая помощь</span>
+    </div>
+    <div class="popular-categiries-item">
+      <%= link_to image_tag("WebDesign.png"), new_category_post_path(5) %>
+      <span>Скоро</span>
+    </div>
+  </div>
+    <section class="home-page-advantages">
+      <h1>Измените Вашу жизнь в лучшую сторону</h1>
+      <h4>Это быстро очень легко и надежно</h4>
+      <div class="advantages">
+        <p class="root">1</p>
+        <h4>Расскажите нам что Вам нужно</h4>
+        <p class="home-page-text-left">
+          Больше не надо судорожно искать объявления в интернете или в газетах, просить знакомых посеветовать хорошего исполнителя, а потом слышать нет я занят давайте потом и так далее
+        </p>
+      </div>
+      <div class="advantages1">
+        <p class="root">2</p>
+        <h4>Выбирете исполнителя</h4>
+        <p class="home-page-text-center">
+          Все наши исполнители проверены службой безопасности сервиса, имеют только проверенные отзывы и рейтинг
+        </p>
+      </div>
+      <div class="advantages2">
+        <p class="root">3</p>
+        <h4>Расслабтесь и наслаждатесь</h4>
+        <p class="home-page-text-end">
+          Наши исполнители с удовольствием выполнять Ваше поручение с особым трепетом подойдут к испольнению поручения
+        </p>
+      </div>
+    </section>
+    <section class="tell-us clear">
+      <section class="home-page-what-we-do">
+        <div class="home-page-i-do-picture">
+      </div>
+      <div class="home-page-i-do">
+      <span class="home-page-p">Сделаем всё, что Вы не хотите делать...</span>
+<ul>
+  <li>
+    <i class="fa fa-check"></i>Уборку дома</li>
+  <li>
+    <i class="fa fa-check"></i>Отвезем вещи</li>
+  <li><i class="fa fa-check"></i>Уберемся в офисе</li>
+  <li><i class="fa fa-check"></i>Соберем мебель</li>
+  <li><i class="fa fa-check"></i>Повесим люстру</li>
+</ul>
+ </div>
+ <div class="home-page-i-do-1">
+  <span class="home-page-p">...чтобы Вы, делали то что, любите .</span>
+  <ul>
+    <li> <i class="fa fa-check"></i>проводили больше времени с детьми</li>
+    <li><i class="fa fa-check"></i> прочитали хорошую книгу</li>
+    <li><i class="fa fa-check"></i>пошли на прогулку</li>
+    <li><i class="fa fa-check"></i>встретились с друзьями</li>
+    <li><i class="fa fa-check"></i>написали новеллу</li>
+  </ul>
+ </div>
+ </section>
+    </section>
+    <section class="home-page-why">
+      <h2 class="super-font">Почему <strong>Taskme</strong>?</h2>
+      <div class="why-sections">
+        <div class="why-section border-left-none border-top-none">
+          <h4>
+            <i class="fa fa-clock-o fa-2x"></i>
+            <p>Экономит время</p>
+          </h4>
+          <p>Вы не ищите исполнителя, исполнитель Сам найдет Вас, Вам нужно только подать заявку и заинтересованные исполнители сами найдут Вас</p>
+        </div>
+        <div class="why-section border-top-none">
+          <h4>
+            <i class="fa fa fa-shield fa-2x"></i>
+            <p>Безопасность</p>
+          </h4>
+          <p> Все наши исполнители прошли проверку службой безопасности и имеют только проверенные отзывы</p>
+        </div>
+        <div class="why-section border-top-none">
+          <h4>
+            <i class="fa fa-thumbs-up fa-2x"></i>
+            <p>Только лучшие исполнители</p>
+          </h4>
+          <p>Исполнители имеющие более трех негативных отзывов автоматически лишаются возможности предлагать свои услуги на TaskMe</p>
+        </div>
+      </div>
+      <div class="why-sections">
+        <div class="why-section border-left-none">
+          <h4>
+            <i class="fa fa-thumb-tack fa-2x"></i>
+            <p>Это просто</p>
+          </h4>
+          <p>Подайте заявку всего в три клика, и выберете исполнителя с кем вы хотели бы посотрудничать</p>
+        </div>
+        <div class="why-section">
+          <h4>
+            <i class="fa fa-comments-o fa-2x"></i>
+            <p>Легкость общения</p>
+          </h4>
+          <p>Вы без проблем сможете пообщаться с исполнителями пере выбором</p>
+        </div>
+        <div class="why-section">
+          <h4>
+            <i class="fa fa-usd fa-2x"></i>
+            <p>Никакой предоплаты</p>
+          </h4>
+          <p>Все задания оплачиваются, только после выполнения</p>
+        </div>
+      </div>
+    </section>
+    <div class="home-page-super-link">
+      <p>Готовы жить лучше?</p>
+       <%= link_to "закажите услугу", categories_path %>
+      </div>
+    <section class="popular-category">
+    <section class="pluso-section">
+    <section class="home-page-feed">
+      <h2 class="super-font">Что заказывают прямо сейчас</h2>
+      <div class="home-page-all-posts-feeding">
+      <div class="home-page-posts-feed">
+      <%= sync_new partial: 'main_post', resource: Post.create, direction: :prepend %>
+    </div>
+<div class="home-page-posts-feed">
+  <% @posts.each do |post| %>
+  <div class="home-page-feed-item">
+  <div class="hp-post-user-avatar">
+  <%= link_to (avatar_for post.user, size: "60x60"), post.user %>
+  </div>
+  <div class="hp-name-content-price">
+  <div class="home-page-posts-name">
+  <%= link_to (truncate post.name, length: 28), post %>
+  </div>
+  <div class="home-page-posts-price">
+    <% if post.price.present? %>
+    <%= number_to_currency(post.price, precision: 0, delimiter: " ") %>
+    <% else %>
+    открытая цена
+  <% end %>
+</div>
+<div class="home-page-posts-content">
+  <%= (truncate post.content, length: 140) %>
+  </div>
+  </div>
+  </div>
+  <% end %>
+</div>
+</section>
+<section class="pluso-section-only">
+  <div class="home-page-contact-us">
+              <span class="home-page-contact-us-pic"><%= image_tag "4.png", size: "50x50" %></span>
+              <p class="home-page-callback">Звоните, я помогу вам<br>создать задание</p>
+              <p class="home-page-callbackphone">8 (707) 911 02 02</p>
+              <p class="home-page-hotline">Горячая линия: с 9:00 по 23:00,
+в выходные: с 9:00 по 21:00</p>
+            </div>
+</section>
+</section>
+  <div class="home_howwork clear">
+      <h1 class="super-font">Как это работает?</h1>
+       <div class="how-it-works-item">
+        <h4>
+        Как это работает?
+        </h4>
+        <a>
+          <%= link_to (image_tag "hiw-1.png", size: "200x200"),about_path %>
+        </a>
+        <p>
+        Уже через 2 минуты после создания задания вы можете найти исполнителя
+        </p>
+      </div>
+      <div class="how-it-works-item">
+          <h4>
+          Безопасность и гарантии
+          </h4>
+          <a>
+            <%= link_to (image_tag "shield-296639_640.png", size: "200x200"), security_path %>
+          </a>
+          <p>
+          Все наши исполнители прошли проверку службой безопасности и имеют только проверенные отзывы
+          </p>
+        </div>
+        <div class="how-it-works-item">
+          <h4>
+          Как стать исполнителем
+          </h4>
+          <a>  
+            <%= link_to (image_tag "badge.png", size: "250x200"), howtobeexecutor_path %>
+          </a>
+          <p>
+          Предложение для частных лиц и компаний по сотрудничеству с TaskMe
+          </p>
+        </div>
+    </div>
+  </section>
+      </div>
+      <div class="push"></div>
+    </div>
+    <%= render 'layouts/footer' %>
+     <%= debug(params) if Rails.env.development? %>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+
+<span class="activity-time"><%= time_ago_in_words(activity.created_at) %> назад.</span>
+<div class="notification-info">
+	<p>
+		Вам добавили отзыв 
+	</p>
+	 «<%= link_to activity.trackable.post.name, activity.trackable.post %>»
+</div>

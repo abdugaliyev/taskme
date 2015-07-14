@@ -1,0 +1,18 @@
+<% provide(:title, 'Предложить свои услуги') %>
+<div class="responce_new">
+        <h4>Предложить услуги</h4>
+     <%= form_for([@post, @responce]) do |f| %>
+     <%= render 'shared/error_messages', object: f.object %>
+      <div class="responce_price">
+        <h5>Укажите во сколько вы оцениваете свои услуги</h5>
+      <%= f.label :price, "Цена" %>
+      <%= f.text_field :price, placeholder: "Цена", class: "form-control" %>
+      <span>тенге</span>
+      </div>
+      <div>
+        <h4>Комментарий</h4>
+      <%= f.text_area :comment, placeholder: "прокомментируйте свое предложение, тут вы можете написать всё что желаете", class: "form-control" %>
+      </div>
+      <%= f.submit "Оставить предложение", class: "btn btn-large btn-success" %>
+      <% end %>
+      </div>
